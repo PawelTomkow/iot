@@ -1,0 +1,11 @@
+DEBUG_BLUETOOTH = True
+DEBUG_STREAM_ACC = True
+
+DEVICE_NAME = "MetaWear"
+
+INFLUXDB_URL = "http://influxdb:18086"
+INFLUXDB_USERNAME = "root"
+INFLUXDB_PASSWORD = "root"
+INFLUX_DATABASE = "metamon"
+
+BATCH_STORE = False

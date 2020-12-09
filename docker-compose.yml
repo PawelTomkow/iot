@@ -1,0 +1,40 @@
+version: '3'
+services:
+  influxdb:
+    image: influxdb:latest
+    ports:
+      - '18086:8086'
+    volumes:
+      - influxdb-storage:/var/lib/influxdb
+    environment:
+      - INFLUXDB_DB=metamon
+      - INFLUXDB_ADMIN_USER=${root}
+      - INFLUXDB_ADMIN_PASSWORD=${root}
+  chronograf:
+    image: chronograf:latest
+    ports:
+      - '127.0.0.1:18888:8888'
+    volumes:
+      - chronograf-storage:/var/lib/chronograf
+    depends_on:
+      - influxdb
+    environment:
+      - INFLUXDB_URL=http://influxdb:8086
+      - INFLUXDB_USERNAME=${root}
+      - INFLUXDB_PASSWORD=${root}
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - '13000:3000'
+    volumes:
+      - grafana-storage:/var/lib/grafana
+      - ./grafana-provisioning/:/etc/grafana/provisioning
+    depends_on:
+      - influxdb
+    environment:
+      - GF_SECURITY_ADMIN_USER=${root}
+      - GF_SECURITY_ADMIN_PASSWORD=${root}
+volumes:
+  influxdb-storage:
+  chronograf-storage:
+  grafana-storage:
